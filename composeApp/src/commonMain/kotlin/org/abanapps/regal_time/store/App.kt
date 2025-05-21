@@ -15,6 +15,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.mmk.kmpauth.google.GoogleAuthCredentials
+import com.mmk.kmpauth.google.GoogleAuthProvider
+import kotlinx.coroutines.delay
+import org.abanapps.regal_time.store.navigation.SetupNavGraph
+import org.abanapps.regal_time.store.shared.Constants
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -28,25 +33,48 @@ fun App() {
         mutableIntStateOf(0)
     }
 
+    val coroutineScope = rememberCoroutineScope()
+
 //    val input by rememberSaveable {
 //        mutableIntStateOf(5)
 //    }
 
     MaterialTheme {
 
-        Column(
-            modifier = Modifier.fillMaxSize().safeContentPadding(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-
-            NativeButton(onClick = {
-                counter ++
-            },)
-
-            Text("Counter: $counter")
-
+        var appReady by remember {
+            mutableStateOf(false)
         }
+
+        LaunchedEffect(
+            Unit
+        ) {
+            GoogleAuthProvider.create(credentials = GoogleAuthCredentials(serverId = Constants.WEB_CLIENT_ID))
+            delay(3000)
+            appReady = true
+        }
+
+
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxSize(),
+            visible = appReady
+        ) {
+            SetupNavGraph()
+        }
+
+
+//        Column(
+//            modifier = Modifier.fillMaxSize().safeContentPadding(),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.Center
+//        ) {
+//
+//            NativeButton(onClick = {
+//                counter ++
+//            },)
+//
+//            Text("Counter: $counter")
+//
+//        }
 
 //        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
 //

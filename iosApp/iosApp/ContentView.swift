@@ -1,6 +1,10 @@
 import UIKit
 import SwiftUI
 import ComposeApp
+import GoogleSignIn
+import Firebase
+import FirebaseCore
+import FirebaseAuth
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
@@ -14,8 +18,10 @@ struct ComposeView: UIViewControllerRepresentable {
 
 struct ContentView: View {
     var body: some View {
-        ComposeView()
-                .ignoresSafeArea(.keyboard) // Compose has own keyboard handler
+        ComposeView().onOpenURL(perform: { url in
+            GIDSignIn.sharedInstance.handle(url)
+        })
+                /*.ignoresSafeArea(.keyboard)*/ // Compose has own keyboard handler
     }
 }
 

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "738377823553",
+    "firebase_url": "https://qr-circle-default-rtdb.firebaseio.com",
+    "project_id": "qr-circle",
+    "storage_bucket": "qr-circle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738377823553:android:c7001af8b74483742e1dc0",
+        "android_client_info": {
+          "package_name": "org.abanapps.regal_time.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "738377823553-695rok7cbuaha6179dol0u43ekeb2te1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.abanapps.regal_time.store",
+            "certificate_hash": "309b2b450531fd148bc3063fd5e8be2469b4a809"
+          }
+        },
+        {
+          "client_id": "738377823553-he3pv8av57i2npgsu6ria8psf3e8nn7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZzSmLUEbWM10O3pt91t6KtmRAxaV9NaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "738377823553-he3pv8av57i2npgsu6ria8psf3e8nn7f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
