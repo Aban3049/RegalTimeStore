@@ -1,5 +1,3 @@
 package org.abanapps.regal_time.store.auth
 
-actual fun getPlatform(): String {
-   return "Android"
-}
+actual val getPlatform = "Android"

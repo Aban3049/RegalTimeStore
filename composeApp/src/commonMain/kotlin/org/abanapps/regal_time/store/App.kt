@@ -49,7 +49,7 @@ fun App() {
             Unit
         ) {
             GoogleAuthProvider.create(credentials = GoogleAuthCredentials(serverId = Constants.WEB_CLIENT_ID))
-            delay(3000)
+//            delay(3000)
             appReady = true
         }
 

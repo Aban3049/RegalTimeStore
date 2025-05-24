@@ -29,8 +29,12 @@ import org.abanapps.regal_time.store.shared.Alpha
 import org.abanapps.regal_time.store.shared.BebasNeueFont
 import org.abanapps.regal_time.store.shared.FontSize
 import org.abanapps.regal_time.store.shared.Surface
+import org.abanapps.regal_time.store.shared.SurfaceBrand
+import org.abanapps.regal_time.store.shared.SurfaceError
 import org.abanapps.regal_time.store.shared.TextPrimary
 import org.abanapps.regal_time.store.shared.TextSecondary
+import org.abanapps.regal_time.store.shared.TextWhite
+import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
 @Composable
@@ -38,6 +42,7 @@ fun AuthScreen() {
 
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
+    val viewModel = koinViewModel<AuthViewModel>()
 
     Scaffold { padding ->
 
@@ -48,7 +53,11 @@ fun AuthScreen() {
             ),
             messageBarState = messageBarState,
             errorMaxLines = 2,
-            contentBackgroundColor = Surface
+            contentBackgroundColor = Surface,
+            errorContentColor = TextWhite,
+            errorContainerColor = SurfaceError,
+            successContainerColor = SurfaceBrand,
+            successContentColor = TextPrimary
         ) {
 
             Column(
@@ -77,22 +86,26 @@ fun AuthScreen() {
                         fontSize = FontSize.EXTRA_REGULAR,
                         color = TextPrimary,
 
-                    )
+                        )
                 }
 
 
                 GoogleButtonUiContainerFirebase(
-                   linkAccount = false,
-                    onResult = {result ->
-                        result.onSuccess {
-                            messageBarState.addSuccess("Authentication Successfully")
+                    linkAccount = false,
+                    onResult = { result ->
+                        result.onSuccess { user ->
+                            viewModel.createCustomer(
+                                user = user,
+                                onSuccess = { messageBarState.addSuccess("Authentication Successfully") },
+                                onFailure = { error -> messageBarState.addError(error) }
+                            )
                             loadingState = false
-                        }.onFailure {error ->
-                            if (error.message?.contains("A network error") == true){
+                        }.onFailure { error ->
+                            if (error.message?.contains("A network error") == true) {
                                 messageBarState.addError("Internet connection unavailable")
-                            }else if (error.message?.contains("Idtoken is null") == true){
+                            } else if (error.message?.contains("Idtoken is null") == true) {
                                 messageBarState.addError("Sign in cancelled.")
-                            }else{
+                            } else {
                                 messageBarState.addError(error.message ?: "Unknown")
                             }
                             loadingState = false
@@ -106,19 +119,19 @@ fun AuthScreen() {
                         this@GoogleButtonUiContainerFirebase.onClick()
                     }
                 }
-                if (getPlatform() == "IOS"){
+                if (getPlatform == "IOS") {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     AppleButtonUiContainer(onResult = { result ->
                         result.onSuccess {
                             messageBarState.addSuccess("Authentication Successfully")
                             loadingState = false
-                        }.onFailure {error ->
-                            if (error.message?.contains("A network error") == true){
+                        }.onFailure { error ->
+                            if (error.message?.contains("A network error") == true) {
                                 messageBarState.addError("Internet connection unavailable")
-                            }else if (error.message?.contains("Idtoken is null") == true){
+                            } else if (error.message?.contains("Idtoken is null") == true) {
                                 messageBarState.addError("Sign in cancelled.")
-                            }else{
+                            } else {
                                 messageBarState.addError(error.message ?: "Unknown")
                             }
                             loadingState = false
