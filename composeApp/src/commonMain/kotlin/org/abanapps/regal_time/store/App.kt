@@ -18,10 +18,13 @@ import androidx.compose.ui.Modifier
 import com.mmk.kmpauth.google.GoogleAuthCredentials
 import com.mmk.kmpauth.google.GoogleAuthProvider
 import kotlinx.coroutines.delay
+import org.abanapps.regal_time.store.data.domain.CustomerRepository
+import org.abanapps.regal_time.store.shared.navigation.Screen
 import org.abanapps.regal_time.store.navigation.SetupNavGraph
 import org.abanapps.regal_time.store.shared.Constants
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 import regaltimestore.composeapp.generated.resources.Res
 import regaltimestore.composeapp.generated.resources.compose_multiplatform
@@ -40,7 +43,9 @@ fun App() {
 //    }
 
     MaterialTheme {
-
+        val customerRepository = koinInject<CustomerRepository>()
+        val isUserAuthenticated = remember { customerRepository.getCurrentUserId() != null }
+        val startDestination = remember { if (isUserAuthenticated) Screen.HomeGraph else Screen.Auth }
         var appReady by remember {
             mutableStateOf(false)
         }
@@ -58,7 +63,9 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             visible = appReady
         ) {
-            SetupNavGraph()
+            SetupNavGraph(
+                startDestination = startDestination
+            )
         }
 
 

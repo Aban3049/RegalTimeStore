@@ -47,9 +47,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(project(":navigation"))
             implementation(project(":shared"))
+            implementation(project(":data"))
             implementation(project(":di"))
             implementation(libs.auth.kmp)
             implementation(libs.firebase.app)
+            implementation(libs.koin.compose)
         }
     }
 }

@@ -5,16 +5,34 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.abanapps.regal_time.store.auth.AuthScreen
+import org.abanapps.regal_time.store.home.HomeGraphScreen
+import org.abanapps.regal_time.store.shared.navigation.Screen
 
 @Composable
-fun SetupNavGraph(){
+fun SetupNavGraph(
+   startDestination: Screen = Screen.Auth
+){
 
    val navController = rememberNavController()
 
-   NavHost(navController = navController, startDestination = Screen.Auth){
+   NavHost(navController = navController, startDestination = startDestination){
 
       composable<Screen.Auth> {
-         AuthScreen()
+         AuthScreen(
+            navigateToHome = {
+               navController.navigate(Screen.HomeGraph){
+                  popUpTo<Screen.Auth>{ inclusive = true }
+               }
+            }
+         )
+      }
+
+      composable<Screen.HomeGraph> {
+         HomeGraphScreen(navigateToAuth = {
+            navController.navigate(Screen.Auth){
+               popUpTo<Screen.HomeGraph>{ inclusive = true }
+            }
+         })
       }
 
    }

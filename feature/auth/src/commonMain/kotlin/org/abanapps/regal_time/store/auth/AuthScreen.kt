@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import com.mmk.kmpauth.firebase.apple.AppleButtonUiContainer
 import com.mmk.kmpauth.firebase.google.GoogleButtonUiContainerFirebase
 import com.mmk.kmpauth.google.GoogleButtonUiContainer
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.abanapps.regal_time.store.auth.components.AppleIdButton
 import org.abanapps.regal_time.store.auth.components.GoogleButton
 import org.abanapps.regal_time.store.shared.Alpha
@@ -38,13 +41,18 @@ import org.koin.compose.viewmodel.koinViewModel
 import rememberMessageBarState
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(
+    navigateToHome: () -> Unit,
+) {
 
+    val coroutineScope = rememberCoroutineScope()
     val messageBarState = rememberMessageBarState()
     var loadingState by remember { mutableStateOf(false) }
     val viewModel = koinViewModel<AuthViewModel>()
 
-    Scaffold { padding ->
+    Scaffold(
+        containerColor = Surface
+    ) { padding ->
 
         ContentWithMessageBar(
             modifier = Modifier.padding(
@@ -57,7 +65,7 @@ fun AuthScreen() {
             errorContentColor = TextWhite,
             errorContainerColor = SurfaceError,
             successContainerColor = SurfaceBrand,
-            successContentColor = TextPrimary
+            successContentColor = TextPrimary,
         ) {
 
             Column(
@@ -96,7 +104,13 @@ fun AuthScreen() {
                         result.onSuccess { user ->
                             viewModel.createCustomer(
                                 user = user,
-                                onSuccess = { messageBarState.addSuccess("Authentication Successfully") },
+                                onSuccess = {
+                                    coroutineScope.launch {
+                                        messageBarState.addSuccess("Authentication Successfully")
+                                        delay(2000)
+                                        navigateToHome()
+                                    }
+                                },
                                 onFailure = { error -> messageBarState.addError(error) }
                             )
                             loadingState = false
@@ -123,8 +137,18 @@ fun AuthScreen() {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     AppleButtonUiContainer(onResult = { result ->
-                        result.onSuccess {
-                            messageBarState.addSuccess("Authentication Successfully")
+                        result.onSuccess { user ->
+                            viewModel.createCustomer(
+                                user = user,
+                                onSuccess = {
+                                    coroutineScope.launch {
+                                        messageBarState.addSuccess("Authentication Successfully")
+                                        delay(2000)
+                                        navigateToHome()
+                                    }
+                                },
+                                onFailure = { error -> messageBarState.addError(error) }
+                            )
                             loadingState = false
                         }.onFailure { error ->
                             if (error.message?.contains("A network error") == true) {

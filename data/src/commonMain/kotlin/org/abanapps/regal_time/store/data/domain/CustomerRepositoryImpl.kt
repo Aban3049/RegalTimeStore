@@ -2,10 +2,17 @@ package org.abanapps.regal_time.store.data.domain
 
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.FirebaseUser
+import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.firestore
 import org.abanapps.regal_time.store.shared.domain.Customer
+import org.abanapps.regal_time.store.shared.utlil.RequestState
 
 class CustomerRepositoryImpl : CustomerRepository {
+
+
+    override fun getCurrentUserId(): String? {
+        return Firebase.auth.currentUser?.uid
+    }
 
     override suspend fun createCustomer(
         user: FirebaseUser?,
@@ -42,6 +49,15 @@ class CustomerRepositoryImpl : CustomerRepository {
 
         catch (e: Exception) {
             onFailure("Error while creating a Customer: ${e.message}")
+        }
+    }
+
+    override suspend fun signOut(): RequestState<Unit> {
+        return try {
+            Firebase.auth.signOut()
+            RequestState.Success(data = Unit)
+        }catch (e: Exception){
+            RequestState.Error("Error while signing out: ${e.message}")
         }
     }
 

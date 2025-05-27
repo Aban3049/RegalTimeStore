@@ -20,7 +20,7 @@ struct ContentView: View {
     var body: some View {
         ComposeView().onOpenURL(perform: { url in
             GIDSignIn.sharedInstance.handle(url)
-        })
+        }).ignoresSafeArea(.container)
                 /*.ignoresSafeArea(.keyboard)*/ // Compose has own keyboard handler
     }
 }
