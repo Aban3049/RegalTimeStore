@@ -9,7 +9,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -63,7 +62,8 @@ import rememberMessageBarState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeGraphScreen(
-    navigateToAuth:() -> Unit
+    navigateToAuth:() -> Unit,
+    navigateToProfile:() -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -114,7 +114,7 @@ fun HomeGraphScreen(
             onBlogClick = {},
             onContactUsClick = {},
             onLocationClick = {},
-            onProfileClick = {},
+            onProfileClick = navigateToProfile ,
             onSignOutClick = {
                 viewModel.signOut(
                     onSuccess = {

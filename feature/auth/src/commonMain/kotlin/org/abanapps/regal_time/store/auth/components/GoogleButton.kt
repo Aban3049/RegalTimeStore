@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import org.abanapps.regal_time.store.shared.BorderIdle
 import org.abanapps.regal_time.store.shared.FontSize
 import org.abanapps.regal_time.store.shared.IconSecondary
 import org.abanapps.regal_time.store.shared.Resources
@@ -46,7 +47,7 @@ fun GoogleButton(
     icon: DrawableResource = Resources.Image.GoogleLogo,
     shape: Shape = RoundedCornerShape(99.dp),
     backgroundColor: Color = SurfaceLighter,
-    borderColor: Color = SurfaceLighter,
+    borderColor: Color = BorderIdle,
     progressIndicatorColor: Color = IconSecondary,
     onClick: () -> Unit,
 ) {

@@ -4,6 +4,7 @@ import org.abanapps.regal_time.store.auth.AuthViewModel
 import org.abanapps.regal_time.store.home.HomeGraphViewModel
 import org.abanapps.regal_time.store.data.domain.CustomerRepository
 import org.abanapps.regal_time.store.data.domain.CustomerRepositoryImpl
+import org.abanapps.regal_time.store.profile.ProfileViewModel
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModelOf
@@ -13,6 +14,7 @@ val sharedModule = module {
     single<CustomerRepository> { CustomerRepositoryImpl() }
     viewModelOf(::AuthViewModel)
     viewModelOf(::HomeGraphViewModel)
+    viewModelOf(::ProfileViewModel)
 }
 
 fun initializeKoin(
